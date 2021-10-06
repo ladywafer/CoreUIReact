@@ -3,37 +3,19 @@ import {
   CButton,
   CCard,
   CCardBody,
-  CCardFooter,
-  CCardHeader,
   CDataTable,
   CCollapse,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CForm,
-  CContainer,
-  CRow,
-  CCol,
-  CInput,
-  CLabel,
-  CFormGroup,
-  CFormText
 } from '@coreui/react'
 import UsersApi from "../../API/UsersApi";
-import * as details from "core-js";
+import MyModal from "../../myComponents/MyModal";
 
 const Dashboard = () => {
+  const userState = {firstName: '', lastName: '', email: '', password: undefined, username: ''}
+
   const [allUsers, setUsers] = useState([]);
-
-  useEffect(() => {
-    fetchingUsers()
-  }, []);
-
-  async function fetchingUsers() {
-    const users = await UsersApi.getAllUsers()
-    setUsers(users)
-  }
+  const [details, setDetails] = useState([]);
+  const [modalVisibility, setModalVisibility] = useState(false);
+  const [userData, setUserData] = useState(userState)
 
 
   const fields = [
@@ -43,9 +25,18 @@ const Dashboard = () => {
     {key: "username", label: "Имя пользователя", _style: {width: '15%'}},
     {key: "password", label: "Пароль", _style: {width: '15%'}},
     {key: 'show_details', label: "", _style: {width: '5%'}, filter: false, sorter: false},
-
   ]
-  const [details, setDetails] = useState([])
+
+  useEffect(() => {
+    fetchingUsers()
+  }, []);
+
+
+  const fetchingUsers = async () => {
+    const users = await UsersApi.getAllUsers()
+    setUsers(users)
+  }
+
   const toggleDetails = (index) => {
     const position = details.indexOf(index)
     let newDetails = details.slice()
@@ -57,124 +48,41 @@ const Dashboard = () => {
     setDetails(newDetails)
   }
 
-  const [modalAddNewUser, setModalAddNewUser] = useState(false);
-  const toggleAddNewUser = () => {
-    setModalAddNewUser(!modalAddNewUser);
-  }
-  const [modalEditUser, setModalEditUser] = useState(false);
-  const toggleEditUser = (item) => {
-    setModalEditUser(!modalEditUser);
-    setEdit(...item)
+  const createNewUser = async (user) => {
+    await UsersApi.addNewUser(user)
+    setModalVisibility(!modalVisibility)
+    await fetchingUsers()
   }
 
-  const [newUser, setNewUser] = useState({firstName: '', lastName: '', email: '', password: '', username: ''});
-  const addNewUser = async () => {
-    toggleAddNewUser()
-    await UsersApi.addNewUser(newUser)
-    fetchingUsers();
+  const editUser = async (user) => {
+    await UsersApi.editUser(user, user.id)
+    setModalVisibility(!modalVisibility)
+    await fetchingUsers()
   }
 
-  const [edit, setEdit] = useState({firstName: '', lastName: '', email: '', password: '', username: ''});
-  const editUser = async (id) =>{
-    await UsersApi.editUser(setEdit, id)
+  const toggleModalNewUser = () => {
+    setUserData(userState)
+    setModalVisibility(!modalVisibility)
   }
-  const [deleteUser, setDeleteUser] = useState({id: ''})
+
+  const toggleModalEditUser = (user) => {
+    setUserData(user)
+    setModalVisibility(!modalVisibility)
+  }
+
   const delUser = async (id) => {
     await UsersApi.deleteUser(id)
-
+    await fetchingUsers()
   }
+
   return (
     <div>
-      <>
-        <CButton
-          color="primary"
-          onClick={toggleAddNewUser}
-          className="mb-2"
-        >Добавить нового пользователя
-        </CButton>
-        <CModal
-          show={modalAddNewUser}
-          onClose={toggleAddNewUser}
-        >
-          <CModalHeader closeButton>Новый пользователь</CModalHeader>
-          <CModalBody>
-            {/*форма*/}
-            <CContainer fluid>
-              <CRow>
-                <CCol sm="12">
-                  <CForm action="" method="post">
-                    <CFormGroup>
-                      <CLabel>Имя</CLabel>
-                      <CInput
-                        type="text"
-                        placeholder="Введите имя"
-                        value={newUser.firstName}
-                        onChange={e => setNewUser({...newUser, firstName: e.target.value})}
-                      />
-                      <CFormText className="help-block">Введите имя</CFormText>
-                    </CFormGroup>
-
-                    <CFormGroup>
-                      <CLabel>Фамилия</CLabel>
-                      <CInput
-                        type="text"
-                        placeholder="Введите фамилию.."
-                        value={newUser.lastName}
-                        onChange={e => setNewUser({...newUser, lastName: e.target.value})}
-                      />
-                      <CFormText className="help-block">Введите фамилию</CFormText>
-                    </CFormGroup>
-
-                    <CFormGroup>
-                      <CLabel htmlFor="nf-email">Email</CLabel>
-                      <CInput
-                        type="email"
-                        id="nf-email"
-                        name="nf-email"
-                        placeholder="Введите Email.."
-                        autoComplete="email"
-                        value={newUser.email}
-                        onChange={e => setNewUser({...newUser, email: e.target.value})}
-                      />
-                      <CFormText className="help-block">Введите email</CFormText>
-                    </CFormGroup>
-                    <CFormGroup>
-                      <CLabel>Пароль</CLabel>
-                      <CInput
-                        type="text"
-                        placeholder="Введите пароль.."
-                        value={newUser.password}
-                        onChange={e => setNewUser({...newUser, password: e.target.value})}
-                      />
-                      <CFormText className="help-block">Введите имя пользователя</CFormText>
-                    </CFormGroup>
-                    <CFormGroup>
-                      <CLabel>Имя пользователя</CLabel>
-                      <CInput
-                        type="text"
-                        placeholder="Введите имя пользователя.."
-                        value={newUser.username}
-                        onChange={e => setNewUser({...newUser, username: e.target.value})}
-                      />
-                      <CFormText className="help-block">Введите имя пользователя</CFormText>
-                    </CFormGroup>
-
-                  </CForm>
-                </CCol>
-              </CRow>
-            </CContainer>
-          </CModalBody>
-          <CModalFooter>
-            <CButton color="primary"
-                     onClick={addNewUser}
-            >Добавить</CButton>{' '}
-            <CButton
-              color="secondary"
-              onClick={toggleAddNewUser}
-            >Отмена</CButton>
-          </CModalFooter>
-        </CModal>
-      </>
+      <CButton
+        color="primary"
+        onClick={toggleModalNewUser}
+        className="mb-2"
+      >Добавить нового пользователя
+      </CButton>
       <CCard>
         <CDataTable
           items={allUsers}
@@ -218,91 +126,10 @@ const Dashboard = () => {
                         <CButton
                           size="sm"
                           color="info"
-                          onClick={() => toggleEditUser(item)}
+                          onClick={() => toggleModalEditUser(item)}
                         >
                           Редактировать
                         </CButton>
-                        <CModal
-                          show={modalEditUser}
-                          onClose={toggleEditUser}
-                        >
-                          <CModalHeader closeButton>Пользователь</CModalHeader>
-                          <CModalBody>
-                            {/*форма*/}
-                            <CContainer fluid>
-                              <CRow>
-                                <CCol sm="12">
-                                  <CForm action="" method="post">
-                                    <CFormGroup>
-                                      <CLabel>Имя</CLabel>
-                                      <CInput
-                                        type="text"
-                                        placeholder="Введите имя"
-                                        value={edit.firstName}
-                                        onChange={e => setEdit({...edit, firstName: e.target.value})}
-                                      />
-                                      <CFormText className="help-block">Введите имя</CFormText>
-                                    </CFormGroup>
-
-                                    <CFormGroup>
-                                      <CLabel>Фамилия</CLabel>
-                                      <CInput
-                                        type="text"
-                                        placeholder="Введите фамилию.."
-                                        value={edit.lastName}
-                                        onChange={e => setEdit({...edit, lastName: e.target.value})}
-                                      />
-                                      <CFormText className="help-block">Введите фамилию</CFormText>
-                                    </CFormGroup>
-
-                                    <CFormGroup>
-                                      <CLabel htmlFor="nf-email">Email</CLabel>
-                                      <CInput
-                                        type="email"
-                                        id="nf-email"
-                                        name="nf-email"
-                                        placeholder="Введите Email.."
-                                        autoComplete="email"
-                                        value={edit.email}
-                                        onChange={e => setEdit({...edit, email: e.target.value})}
-                                      />
-                                      <CFormText className="help-block">Введите email</CFormText>
-                                    </CFormGroup>
-                                    <CFormGroup>
-                                      <CLabel>Пароль</CLabel>
-                                      <CInput
-                                        type="text"
-                                        placeholder="Введите пароль.."
-                                        value={edit.password}
-                                        onChange={e => setEdit({...edit, password: e.target.value})}
-                                      />
-                                      <CFormText className="help-block">Введите имя пользователя</CFormText>
-                                    </CFormGroup>
-                                    <CFormGroup>
-                                      <CLabel>Имя пользователя</CLabel>
-                                      <CInput
-                                        type="text"
-                                        placeholder="Введите имя пользователя.."
-                                        value={edit.username}
-                                        onChange={e => setEdit({...edit, username: e.target.value})}
-                                      />
-                                      <CFormText className="help-block">Введите имя пользователя</CFormText>
-                                    </CFormGroup>
-                                  </CForm>
-                                </CCol>
-                              </CRow>
-                            </CContainer>
-                          </CModalBody>
-                          <CModalFooter>
-                            <CButton color="primary"
-
-                            >Сохранить</CButton>{' '}
-                            <CButton
-                              color="secondary"
-                              onClick={toggleEditUser}
-                            >Отмена</CButton>
-                          </CModalFooter>
-                        </CModal>
                       </>
                       <CButton
                         size="sm"
@@ -320,6 +147,22 @@ const Dashboard = () => {
         >
         </CDataTable>
       </CCard>
+
+      <MyModal
+        visible={modalVisibility}
+        setVisible={setModalVisibility}
+        userData={userData}
+        setUserData={setUserData}
+        updateUsers={createNewUser}
+      />
+
+      <MyModal
+        visible={modalVisibility}
+        setVisible={setModalVisibility}
+        userData={userData}
+        setUserData={setUserData}
+        updateUsers={editUser}
+      />
     </div>
   )
 }
