@@ -35,7 +35,7 @@ const MyModal = ({visible, setVisible, userData, setUserData, updateUsers}) => {
                     <CLabel>Имя</CLabel>
                     <CInput
                       type="text"
-                      placeholder="Введите имя"
+                      placeholder="Введите имя.."
                       value={userData.firstName}
                       onChange={e => setUserData({...userData, firstName: e.target.value})}
                     />
@@ -74,7 +74,7 @@ const MyModal = ({visible, setVisible, userData, setUserData, updateUsers}) => {
                       value={userData.password}
                       onChange={e => setUserData({...userData, password: e.target.value})}
                     />
-                    <CFormText className="help-block">Введите имя пользователя</CFormText>
+                    <CFormText className="help-block">Введите пароль</CFormText>
                   </CFormGroup>
                   <CFormGroup>
                     <CLabel>Имя пользователя</CLabel>
