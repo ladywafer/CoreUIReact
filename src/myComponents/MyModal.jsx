@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   CButton,
   CCol,
@@ -14,6 +14,12 @@ import {
 } from "@coreui/react";
 
 const MyModal = ({visible, setVisible, userData, setUserData, updateUsers}) => {
+
+  const isButtonDisabled = useMemo(() => {
+    return !(userData.firstName && userData.lastName &&
+      userData.email && userData.password && userData.username)
+  }, [userData])
+
   return (
     <div>
       <CModal
@@ -87,9 +93,13 @@ const MyModal = ({visible, setVisible, userData, setUserData, updateUsers}) => {
           </CContainer>
         </CModalBody>
         <CModalFooter>
-          <CButton color="primary"
-                   onClick={() => updateUsers(userData)}
-          >Сохранить</CButton>{' '}
+          <CButton
+            color="primary"
+            onClick={() => updateUsers(userData)}
+            disabled={isButtonDisabled}
+          >
+            Сохранить
+          </CButton>
           <CButton
             color="secondary"
             onClick={() => setVisible(false)}

@@ -46,8 +46,8 @@ const Login = () => {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm>
-                    <h1>Login</h1>
-                    <p className="text-muted">Sign In to your account</p>
+                    <h1>Вход</h1>
+                    <p className="text-muted">Войдите в свой аккаунт</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupPrepend>
                         <CInputGroupText>
@@ -56,7 +56,7 @@ const Login = () => {
                       </CInputGroupPrepend>
                       <CInput
                         type="text"
-                        placeholder="Username"
+                        placeholder="Имя пользователя"
                         autoComplete="username"
                         value={username}
                         onChange={e => setUsername(e.target.value)}
@@ -70,7 +70,7 @@ const Login = () => {
                       </CInputGroupPrepend>
                       <CInput
                         type="password"
-                        placeholder="Password"
+                        placeholder="Пароль"
                         autoComplete="current-password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
@@ -83,7 +83,7 @@ const Login = () => {
                           className="w-100"
                           onClick={login}
                         >
-                          Login
+                          Войти
                         </CButton>
                       </CCol>
                     </CRow>

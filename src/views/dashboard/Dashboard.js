@@ -14,16 +14,16 @@ const Dashboard = () => {
 
   const [allUsers, setUsers] = useState([]);
   const [details, setDetails] = useState([]);
-  const [modalVisibility, setModalVisibility] = useState(false);
+  const [modalNewUserVisibility, setModalNewUserVisibility] = useState(false);
+  const [modalEditUserVisibility, setModalVEditUserVisibility] = useState(false);
   const [userData, setUserData] = useState(userState)
 
 
   const fields = [
-    {key: "firstName", label: "Имя", _style: {width: '20%'}},
-    {key: "lastName", label: "Фамилия", _style: {width: '20%'}},
+    {key: "firstName", label: "Имя", _style: {width: '25%'}},
+    {key: "lastName", label: "Фамилия", _style: {width: '25%'}},
     {key: "email", label: "Почта", _style: {width: '25%'}},
-    {key: "username", label: "Имя пользователя", _style: {width: '15%'}},
-    {key: "password", label: "Пароль", _style: {width: '15%'}},
+    {key: "username", label: "Имя пользователя", _style: {width: '20%'}},
     {key: 'show_details', label: "", _style: {width: '5%'}, filter: false, sorter: false},
   ]
 
@@ -50,27 +50,27 @@ const Dashboard = () => {
 
   const createNewUser = async (user) => {
     await UsersApi.addNewUser(user)
-    setModalVisibility(!modalVisibility)
+    setModalNewUserVisibility(!modalNewUserVisibility)
     await fetchingUsers()
   }
 
   const editUser = async (user) => {
     await UsersApi.editUser(user, user.id)
-    setModalVisibility(!modalVisibility)
+    setModalVEditUserVisibility(!modalEditUserVisibility)
     await fetchingUsers()
   }
 
   const toggleModalNewUser = () => {
     setUserData(userState)
-    setModalVisibility(!modalVisibility)
+    setModalNewUserVisibility(!modalNewUserVisibility)
   }
 
   const toggleModalEditUser = (user) => {
     setUserData(user)
-    setModalVisibility(!modalVisibility)
+    setModalVEditUserVisibility(!modalEditUserVisibility)
   }
 
-  const delUser = async (id) => {
+  const deleteUser = async (id) => {
     await UsersApi.deleteUser(id)
     await fetchingUsers()
   }
@@ -125,7 +125,7 @@ const Dashboard = () => {
                       <>
                         <CButton
                           size="sm"
-                          color="info"
+                          color="primary"
                           onClick={() => toggleModalEditUser(item)}
                         >
                           Редактировать
@@ -135,7 +135,7 @@ const Dashboard = () => {
                         size="sm"
                         color="danger"
                         className="ml-1"
-                        onClick={() => delUser(item.id)}
+                        onClick={() => deleteUser(item.id)}
                       >
                         Удалить
                       </CButton>
@@ -149,16 +149,16 @@ const Dashboard = () => {
       </CCard>
 
       <MyModal
-        visible={modalVisibility}
-        setVisible={setModalVisibility}
+        visible={modalNewUserVisibility}
+        setVisible={setModalNewUserVisibility}
         userData={userData}
         setUserData={setUserData}
         updateUsers={createNewUser}
       />
 
       <MyModal
-        visible={modalVisibility}
-        setVisible={setModalVisibility}
+        visible={modalEditUserVisibility}
+        setVisible={setModalVEditUserVisibility}
         userData={userData}
         setUserData={setUserData}
         updateUsers={editUser}
