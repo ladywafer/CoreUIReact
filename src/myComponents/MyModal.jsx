@@ -17,7 +17,7 @@ const MyModal = ({visible, setVisible, userData, setUserData, updateUsers}) => {
 
   const isButtonDisabled = useMemo(() => {
     return !(userData.firstName && userData.lastName &&
-      userData.email && userData.password && userData.username)
+      userData.email && userData.username)
   }, [userData])
 
   return (
@@ -25,7 +25,7 @@ const MyModal = ({visible, setVisible, userData, setUserData, updateUsers}) => {
       <CModal
         show={visible}
       >
-        <CModalHeader>Новый пользователь</CModalHeader>
+        <CModalHeader>Пользователь</CModalHeader>
         <CModalBody>
           <CContainer fluid>
             <CRow>
