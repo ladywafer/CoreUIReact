@@ -1,0 +1,43 @@
+{
+  "files": {
+    "static/css/0.be6306aa.chunk.css": "/CoreUIReact/static/css/0.be6306aa.chunk.css",
+    "static/js/0.48234d67.chunk.js": "/CoreUIReact/static/js/0.48234d67.chunk.js",
+    "static/js/0.48234d67.chunk.js.map": "/CoreUIReact/static/js/0.48234d67.chunk.js.map",
+    "static/js/1.d75d6b7d.chunk.js": "/CoreUIReact/static/js/1.d75d6b7d.chunk.js",
+    "static/js/1.d75d6b7d.chunk.js.map": "/CoreUIReact/static/js/1.d75d6b7d.chunk.js.map",
+    "main.css": "/CoreUIReact/static/css/main.1b12d644.chunk.css",
+    "main.js": "/CoreUIReact/static/js/main.a68f3950.chunk.js",
+    "main.js.map": "/CoreUIReact/static/js/main.a68f3950.chunk.js.map",
+    "runtime-main.js": "/CoreUIReact/static/js/runtime-main.bd46cd6d.js",
+    "runtime-main.js.map": "/CoreUIReact/static/js/runtime-main.bd46cd6d.js.map",
+    "static/js/4.8b695f70.chunk.js": "/CoreUIReact/static/js/4.8b695f70.chunk.js",
+    "static/js/4.8b695f70.chunk.js.map": "/CoreUIReact/static/js/4.8b695f70.chunk.js.map",
+    "static/js/5.d6e11c53.chunk.js": "/CoreUIReact/static/js/5.d6e11c53.chunk.js",
+    "static/js/5.d6e11c53.chunk.js.map": "/CoreUIReact/static/js/5.d6e11c53.chunk.js.map",
+    "static/js/6.3bb9b9ed.chunk.js": "/CoreUIReact/static/js/6.3bb9b9ed.chunk.js",
+    "static/js/6.3bb9b9ed.chunk.js.map": "/CoreUIReact/static/js/6.3bb9b9ed.chunk.js.map",
+    "static/js/7.62b3adcb.chunk.js": "/CoreUIReact/static/js/7.62b3adcb.chunk.js",
+    "static/js/7.62b3adcb.chunk.js.map": "/CoreUIReact/static/js/7.62b3adcb.chunk.js.map",
+    "static/js/8.71d45102.chunk.js": "/CoreUIReact/static/js/8.71d45102.chunk.js",
+    "static/js/8.71d45102.chunk.js.map": "/CoreUIReact/static/js/8.71d45102.chunk.js.map",
+    "static/js/9.9e685346.chunk.js": "/CoreUIReact/static/js/9.9e685346.chunk.js",
+    "static/js/9.9e685346.chunk.js.map": "/CoreUIReact/static/js/9.9e685346.chunk.js.map",
+    "static/js/10.db9c3bd4.chunk.js": "/CoreUIReact/static/js/10.db9c3bd4.chunk.js",
+    "static/js/10.db9c3bd4.chunk.js.map": "/CoreUIReact/static/js/10.db9c3bd4.chunk.js.map",
+    "static/js/11.2d83cff0.chunk.js": "/CoreUIReact/static/js/11.2d83cff0.chunk.js",
+    "static/js/11.2d83cff0.chunk.js.map": "/CoreUIReact/static/js/11.2d83cff0.chunk.js.map",
+    "index.html": "/CoreUIReact/index.html",
+    "precache-manifest.526bc40cc2725c4ededd69c6124bbc1f.js": "/CoreUIReact/precache-manifest.526bc40cc2725c4ededd69c6124bbc1f.js",
+    "service-worker.js": "/CoreUIReact/service-worker.js",
+    "static/css/0.be6306aa.chunk.css.map": "/CoreUIReact/static/css/0.be6306aa.chunk.css.map",
+    "static/css/main.1b12d644.chunk.css.map": "/CoreUIReact/static/css/main.1b12d644.chunk.css.map",
+    "static/js/0.48234d67.chunk.js.LICENSE.txt": "/CoreUIReact/static/js/0.48234d67.chunk.js.LICENSE.txt",
+    "static/js/4.8b695f70.chunk.js.LICENSE.txt": "/CoreUIReact/static/js/4.8b695f70.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.bd46cd6d.js",
+    "static/js/4.8b695f70.chunk.js",
+    "static/css/main.1b12d644.chunk.css",
+    "static/js/main.a68f3950.chunk.js"
+  ]
+}
