@@ -29,7 +29,8 @@ const Login = () => {
     const response  = await UsersApi.getMe(username, password)
     if (response) {
       localStorage.setItem('credentials', response)
-      Instance.defaults.headers.common['Authorization'] = 'Basic ' + localStorage.getItem('credentials')
+      console.log(Instance.defaults.headers)
+      Instance.defaults.headers['Authorization'] = 'Basic ' + response
       setIsAuth(true)
     } else {
       setErrorMessage('Неверный логин или пароль')

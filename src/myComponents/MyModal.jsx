@@ -1,47 +1,46 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {
   CButton,
   CCol,
   CContainer,
   CForm,
   CFormGroup,
-  CFormText,
   CInput,
   CLabel, CModal,
-  CModalBody, CModalFooter,
-  CModalHeader,
+  CModalBody, CModalHeader,
   CRow
 } from "@coreui/react";
 
-const MyModal = ({visible, setVisible, userData, setUserData, updateUsers}) => {
+const MyModal = ({visible, setVisible, userData, setUserData, updateUsers, isPasswordRequired=false}) => {
 
-  const isButtonDisabled = useMemo(() => {
-    return !(userData.firstName && userData.lastName &&
-      userData.email && userData.username)
-  }, [userData])
+  const handleSubmit = () => {
+    updateUsers(userData)
+  }
 
   return (
     <div>
       <CModal
         show={visible}
+        className="row g-3 needs-validation"
+        noValidate
+        onSubmit={handleSubmit}
       >
         <CModalHeader>Пользователь</CModalHeader>
         <CModalBody>
           <CContainer fluid>
             <CRow>
               <CCol sm="12">
-                <CForm action="" method="post">
-                  <CFormGroup>
+                <CForm className="was-validated">
+                  <CFormGroup  className="has-validation">
                     <CLabel>Имя</CLabel>
                     <CInput
                       type="text"
+                      required
                       placeholder="Введите имя.."
                       value={userData.firstName}
                       onChange={e => setUserData({...userData, firstName: e.target.value})}
                     />
-                    <CFormText className="help-block">Введите имя</CFormText>
                   </CFormGroup>
-
                   <CFormGroup>
                     <CLabel>Фамилия</CLabel>
                     <CInput
@@ -49,22 +48,23 @@ const MyModal = ({visible, setVisible, userData, setUserData, updateUsers}) => {
                       placeholder="Введите фамилию.."
                       value={userData.lastName}
                       onChange={e => setUserData({...userData, lastName: e.target.value})}
+                      required
                     />
-                    <CFormText className="help-block">Введите фамилию</CFormText>
                   </CFormGroup>
 
                   <CFormGroup>
                     <CLabel htmlFor="nf-email">Email</CLabel>
                     <CInput
-                      type="email"
                       id="nf-email"
-                      name="nf-email"
+                      type="email"
                       placeholder="Введите Email.."
                       autoComplete="email"
                       value={userData.email}
-                      onChange={e => setUserData({...userData, email: e.target.value})}
+                      onChange={e => {
+                        setUserData({...userData, email: e.target.value});
+                      }}
+                      required
                     />
-                    <CFormText className="help-block">Введите email</CFormText>
                   </CFormGroup>
                   <CFormGroup>
                     <CLabel>Пароль</CLabel>
@@ -73,38 +73,40 @@ const MyModal = ({visible, setVisible, userData, setUserData, updateUsers}) => {
                       placeholder="Введите пароль.."
                       value={userData.password}
                       onChange={e => setUserData({...userData, password: e.target.value})}
+                      required={isPasswordRequired}
                     />
-                    <CFormText className="help-block">Введите пароль</CFormText>
                   </CFormGroup>
                   <CFormGroup>
-                    <CLabel>Имя пользователя</CLabel>
+                    <CLabel>Никнейм</CLabel>
                     <CInput
                       type="text"
-                      placeholder="Введите имя пользователя.."
+                      placeholder="Введите никнейм"
                       value={userData.username}
                       onChange={e => setUserData({...userData, username: e.target.value})}
+                      required
                     />
-                    <CFormText className="help-block">Введите имя пользователя</CFormText>
                   </CFormGroup>
+
+                  <div className="float-right mt-3 mb-1">
+                    <CButton
+                      type="submit"
+                      color="primary"
+                      disabled={false}
+                      className="mr-3"
+                    >
+                      Сохранить
+                    </CButton>
+                    <CButton
+                      color="secondary"
+                      onClick={() => setVisible(false)}
+                    >Отмена</CButton>
+                  </div>
 
                 </CForm>
               </CCol>
             </CRow>
           </CContainer>
         </CModalBody>
-        <CModalFooter>
-          <CButton
-            color="primary"
-            onClick={() => updateUsers(userData)}
-            disabled={isButtonDisabled}
-          >
-            Сохранить
-          </CButton>
-          <CButton
-            color="secondary"
-            onClick={() => setVisible(false)}
-          >Отмена</CButton>
-        </CModalFooter>
       </CModal>
     </div>
   );

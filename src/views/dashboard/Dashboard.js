@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {
   CButton,
   CCard,
@@ -8,22 +8,31 @@ import {
 } from '@coreui/react'
 import UsersApi from "../../API/UsersApi";
 import MyModal from "../../myComponents/MyModal";
+import MyWarning from "../../myComponents/MyWarning";
+import MyToast from "../../myComponents/MyToast";
 
 const Dashboard = () => {
-  const userState = {firstName: '', lastName: '', email: '', password: undefined, username: ''}
+  const userState = {firstName: '', lastName: '', email: '', password: '', username: ''}
 
   const [allUsers, setUsers] = useState([]);
   const [details, setDetails] = useState([]);
   const [modalNewUserVisibility, setModalNewUserVisibility] = useState(false);
   const [modalEditUserVisibility, setModalVEditUserVisibility] = useState(false);
-  const [userData, setUserData] = useState(userState)
+  const [warningVisibility, setWarningVisibility] = useState(false)
 
+  const [userData, setUserData] = useState(userState);
+
+  const [clearFilters, setClearFilters] = useState({});
+
+  const [toasts, setToasts]  = useState([]);
+
+  const [itemIndex,setItemIndex]= useState(null)
 
   const fields = [
     {key: "firstName", label: "Имя", _style: {width: '25%'}},
     {key: "lastName", label: "Фамилия", _style: {width: '25%'}},
     {key: "email", label: "Почта", _style: {width: '25%'}},
-    {key: "username", label: "Имя пользователя", _style: {width: '20%'}},
+    {key: "username", label: "Никнейм", _style: {width: '20%'}},
     {key: 'show_details', label: "", _style: {width: '5%'}, filter: false, sorter: false},
   ]
 
@@ -52,12 +61,25 @@ const Dashboard = () => {
     await UsersApi.addNewUser(user)
     setModalNewUserVisibility(!modalNewUserVisibility)
     await fetchingUsers()
+    showSuccessMessage('Запись добавлена')
   }
 
   const editUser = async (user) => {
     await UsersApi.editUser(user, user.id)
     setModalVEditUserVisibility(!modalEditUserVisibility)
     await fetchingUsers()
+    showSuccessMessage('Запись изменена')
+  }
+
+  const deleteUser = async (user) => {
+    await UsersApi.deleteUser(user.id)
+    await fetchingUsers()
+    setWarningVisibility(!warningVisibility)
+    showSuccessMessage('Запись удалена')
+    setDetails(details.splice(details.indexOf(itemIndex), 1))
+    setDetails(details.map((elem) => {
+      return elem > itemIndex ? elem - 1 : elem
+    }))
   }
 
   const toggleModalNewUser = () => {
@@ -70,9 +92,14 @@ const Dashboard = () => {
     setModalVEditUserVisibility(!modalEditUserVisibility)
   }
 
-  const deleteUser = async (id) => {
-    await UsersApi.deleteUser(id)
-    await fetchingUsers()
+  const toggleWarning = (user, index) => {
+    setUserData(user)
+    setWarningVisibility(!warningVisibility)
+    setItemIndex(index)
+  }
+
+  const showSuccessMessage = (toastText) => {
+    setToasts([...toasts, {message: toastText}])
   }
 
   return (
@@ -83,6 +110,14 @@ const Dashboard = () => {
         className="mb-2"
       >Добавить нового пользователя
       </CButton>
+      <CButton
+        color="secondary"
+        onClick={() => setClearFilters({})}
+        className="mb-2 float-right"
+
+      >
+        Очистить фильтры
+      </CButton>
       <CCard>
         <CDataTable
           items={allUsers}
@@ -92,9 +127,9 @@ const Dashboard = () => {
             {align: "center"}
           }
           sorter
-          filter
           columnFilter
-          tableFilter
+          columnFilterValue={clearFilters}
+          onColumnFilterChange={setClearFilters}
           striped
           scopedSlots={{
             'show_details':
@@ -135,7 +170,7 @@ const Dashboard = () => {
                         size="sm"
                         color="danger"
                         className="ml-1"
-                        onClick={() => deleteUser(item.id)}
+                        onClick={() => toggleWarning(item, index)}
                       >
                         Удалить
                       </CButton>
@@ -154,6 +189,7 @@ const Dashboard = () => {
         userData={userData}
         setUserData={setUserData}
         updateUsers={createNewUser}
+        isPasswordRequired={true}
       />
 
       <MyModal
@@ -163,6 +199,18 @@ const Dashboard = () => {
         setUserData={setUserData}
         updateUsers={editUser}
       />
+
+      <MyWarning
+        visible={warningVisibility}
+        setVisible={setWarningVisibility}
+        userData={userData}
+        deleteUser={deleteUser}
+      />
+
+      <MyToast
+        toasters={toasts}
+      />
+
     </div>
   )
 }
